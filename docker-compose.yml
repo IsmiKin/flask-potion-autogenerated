@@ -1,0 +1,37 @@
+server:
+  build: .
+  command: python server.py
+  volumes:
+    - .:/pinfo
+  links:
+    - mysql:mysql
+  ports:
+    - "4333:4333"
+  environment:
+    ENV: dev
+    DB_HOST: mysql
+    DB_SCHEMA: pinfo
+    DB_USERNAME: admin
+    DB_PASSWORD: foo
+
+test:
+  build: .
+  command: ptw
+  volumes:
+    - .:/pinfo
+  links:
+    - mysql:mysql
+  environment:
+    ENV: test
+    DB_HOST: mysql
+    DB_SCHEMA: pinfo
+    DB_USERNAME: admin
+    DB_PASSWORD: foo
+
+mysql:
+  image: mariadb
+  environment:
+    MYSQL_DATABASE: pinfo
+    MYSQL_USER: admin
+    MYSQL_PASSWORD: foo
+    MYSQL_ROOT_PASSWORD: foo
